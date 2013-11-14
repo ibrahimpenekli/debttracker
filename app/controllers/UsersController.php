@@ -11,7 +11,9 @@ class UsersController extends BaseController {
 
 	public function index()
 	{
-		return View::make('users.index', array('user' => $this->user));
+        $purchasedItems = PurchasedItem::orderBy('created_at', 'DESC')->paginate(25);
+		return View::make('users.index', array('user' => $this->user,
+                                               'items' => $purchasedItems));
 	}
 
     public function purchasedItems() 
@@ -89,12 +91,12 @@ class UsersController extends BaseController {
             'password'  => Input::get('password')
         );
 
-        $rememberMe = Input::get('rememberMe');
+        $rememberMe = Input::get('rememberMe') == 'on' ? true : false;
 
         // Validate the inputs.
         $validator = Validator::make($user, User::$rules);
         if($validator->passes()) {
-            if(Auth::attempt($user)) {
+            if(Auth::attempt($user, $rememberMe)) {
                 return Redirect::action('UsersController@index')
                 			   ->with('message', 'You have logged successfully.');
             }

@@ -4,10 +4,10 @@
 	<div class="grid fluid">
 		<div class="row">
             <div class="span4 offset4">
+                <h1>Debt Tracker</h1>
                 {{ Form::open(array('action' => 'UsersController@attempt', 'method' => 'POST')) }}
                     <fieldset>
-                        <legend>User Login</legend>
-
+                        <h2><i class="icon-enter on-left"></i>User Login</h2>
                         <label for="username">Username:</label>
                         <div class="input-control text">
                             <input name="username" id="username" type="text" value="" placeholder="type username"/>

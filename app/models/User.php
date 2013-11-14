@@ -22,8 +22,8 @@ class User extends Eloquent implements UserInterface {
     protected $hidden = array('password');
 
 	public static $rules = array(
-            'username'  => 'required|min:6|max:32|alpha_num',
-            'password'  => 'required|min:6|max:32|'
+            'username'  => 'required|min:3|max:32|alpha_num',
+            'password'  => 'required|min:3|max:32|'
             );
 
     public function purchasedItems() {
