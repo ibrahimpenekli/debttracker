@@ -20,6 +20,7 @@ Route::group(array('before' => 'auth'), function() {
 	Route::post('add-debt', 'UsersController@postAddDebt');	
 	Route::get('add-purchased-item', 'UsersController@getAddPurchasedItem');		
 	Route::post('add-purchased-item', 'UsersController@postAddPurchasedItem');		
+	Route::post('close-period', 'UsersController@postClosePeriodVote');		
 });
 Route::post('attempt', 'UsersController@attempt');
 Route::get('logout', 'UsersController@logout');

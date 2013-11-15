@@ -17,7 +17,7 @@
 	 					<tr>
 	 						<td>{{ $item->description }}</td>
 	 						<td>{{ $item->price }}</td>
-	 						<td>{{ $item->created_at }}</td>
+	 						<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->diffForHumans() }}</td>
 	 					</tr>	
 					@endforeach
 					</tbody>

@@ -21,7 +21,7 @@
 		 						<td>{{ $debt->payee->username }}</td>
 		 						<td>{{ $debt->description }}</td>
 		 						<td>{{ $debt->amount }}</td>
-		 						<td>{{ $debt->created_at }}</td>
+		 						<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $debt->created_at)->diffForHumans() }}</td>
 		 					</tr>	
 						@endforeach
 						</tbody>
@@ -48,7 +48,7 @@
 		 						<td>{{ $income->payer->username }}</td>
 		 						<td>{{ $income->description }}</td>
 		 						<td>{{ $income->amount }}</td>
-		 						<td>{{ $income->created_at }}</td>
+		 						<td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $income->created_at)->diffForHumans() }}</td>
 		 					</tr>	
 						@endforeach
 						</tbody>

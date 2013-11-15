@@ -12,8 +12,24 @@ class UsersController extends BaseController {
 	public function index()
 	{
         $purchasedItems = PurchasedItem::orderBy('created_at', 'DESC')->paginate(25);
+        $users = User::all();
+        $stats = array();
+
+        $totalItemPrice = PurchasedItem::sum('price');
+        $votes = User::sum('closePeriodVote');
+        foreach ($users as $user) {
+            $stats["$user->username"] = array('total' => number_format($user->getTotalItemsPrice(), 2),
+                                              'change' => number_format($user->getTotalItemsPrice() - ($totalItemPrice / $users->count()), 2),);
+        }
+        arsort($stats);
+
+        $totalItemPrice = number_format($totalItemPrice, 2);
 		return View::make('users.index', array('user' => $this->user,
-                                               'items' => $purchasedItems));
+                                               'users' => $users,
+                                               'items' => $purchasedItems,
+                                               'stats' => $stats,
+                                               'votes' => $votes,
+                                               'totalItemPrice' => $totalItemPrice));
 	}
 
     public function purchasedItems() 
@@ -21,6 +37,33 @@ class UsersController extends BaseController {
         $purchasedItems = $this->user->purchasedItems()->paginate(25);
         return View::make('users.purchases.list', array('user'   => $this->user,
                                                         'items'  => $purchasedItems));
+    }
+
+    public function postClosePeriodVote() {
+        if($this->user->closePeriodVote) {
+            return Redirect::action('UsersController@index')
+                           ->with('vote-message', 'Already voted.');
+        }
+        $this->user->closePeriodVote = true;
+        if ($this->user->push()) {
+            $votes = User::sum('closePeriodVote');
+            if($votes == User::count('id')) {
+                $this->closePeriod();
+                return Redirect::action('UsersController@index')
+                               ->with('vote-message', 'New period has been opened!');
+            } 
+            return Redirect::action('UsersController@index')
+                           ->with('vote-message', 'Voted!');
+        }
+        return Redirect::action('UsersController@index')
+                       ->with('vote-message', 'Vote failed.');
+    }
+
+    private function closePeriod() {
+        return DB::transaction(function() {
+            DB::table('Users')->update(array('closePeriodVote' => false));
+            DB::table('PurchasedItems')->update(array('deleted_at' => Carbon::now()->toDateTimeString()));
+        });
     }
 
     public function getDebts() {
@@ -81,7 +124,10 @@ class UsersController extends BaseController {
 
 	public function login() 
 	{
-		return View::make('users.login');
+        if(Auth::guest()) {
+            return View::make('users.login');  
+        }
+        return Redirect::action('UsersController@index');
 	}
 
 	public function attempt() {

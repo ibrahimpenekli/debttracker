@@ -30,6 +30,14 @@ class User extends Eloquent implements UserInterface {
         return  $this->hasMany('PurchasedItem', 'userId');
     }
 
+    public function getTotalItemsPrice() {
+        $total = 0;
+        foreach ($this->purchasedItems as $item) {
+            $total += $item->price;         
+        }
+        return $total;
+    }
+
     public function debts() {
         return  $this->hasMany('Debt', 'payerId');
     }

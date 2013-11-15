@@ -10,25 +10,29 @@ class UsersTableSeeder extends Seeder {
 		User::create(
 			array(
 				'password' => Hash::make('123456'),
-				'username' => 'ibrahim'
+				'username' => 'ibrahim',
+				'closePeriodVote' => false
 			));
 
 		User::create(
 			array(
 				'password' => Hash::make('123456'),
-				'username' => 'ahmet'
+				'username' => 'ahmet',
+				'closePeriodVote' => true
 			));
 
 		User::create(
 			array(
 				'password' => Hash::make('123456'),
-				'username' => 'furkan'
+				'username' => 'furkan',
+				'closePeriodVote' => true
 			));
 
 		User::create(
 			array(
 				'password' => Hash::make('123456'),
-				'username' => 'muzaffer'
+				'username' => 'muzaffer',
+				'closePeriodVote' => true
 			));
 
 	}
