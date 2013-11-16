@@ -4,9 +4,9 @@
 	<div class="grid fluid">
 		<div class="row">
             <div class="span4 offset2">
-                {{ Form::open(array('action' => 'UsersController@postAddDebt', 'method' => 'POST')) }}
+                {{ Form::open(array('action' => 'DebtController@store', 'method' => 'POST')) }}
                     <fieldset>
-                        <legend data-hint="(*) Required" data-hint-position="left">Add Debt</legend>
+                        <legend data-hint="(*) Required" data-hint-position="left">Add New Debt</legend>
                         {{ Form::label('payeeId', '*Whom:') }}
                         <div class="input-control select">
                             {{ Form::select('payeeId', $users) }}
@@ -21,7 +21,7 @@
                             {{ Form::text('amount', '', array('placeholder' => 'type the amount')) }}
                             <button class="btn-clear"></button>
                         </div>
-                        {{ Form::submit('Add') }}
+                        {{ Form::submit('Add', array('class' => 'default')) }}
                         @if(Session::has('message'))
                             {{ Session::get('message') }}
                         @endif

@@ -11,17 +11,19 @@
 |
 */
 
-
 Route::group(array('before' => 'auth'), function() {
+	// Debt controller URIs
+	Route::resource('debt', 'DebtController', array('except' => array('show')));
+	Route::get('debt/{debt}/pay', 'DebtController@pay');
+	Route::put('debt/{debt}/checkout', 'DebtController@checkout');
+	
+	// PurchasedItem controller URIs
+	Route::resource('purchased-item', 'PurchasedItemController', array('except' => array('show')));
+
 	Route::get('profile', 'UsersController@index');
-	Route::get('purchased-items', 'UsersController@purchasedItems');	
-	Route::get('debts', 'UsersController@getDebts');		
-	Route::get('add-debt', 'UsersController@getAddDebt');		
-	Route::post('add-debt', 'UsersController@postAddDebt');	
-	Route::get('add-purchased-item', 'UsersController@getAddPurchasedItem');		
-	Route::post('add-purchased-item', 'UsersController@postAddPurchasedItem');		
-	Route::post('close-period', 'UsersController@postClosePeriodVote');		
+	Route::post('close-period', 'UsersController@postClosePeriodVote');			
 });
+
 Route::post('attempt', 'UsersController@attempt');
 Route::get('logout', 'UsersController@logout');
 Route::get('/', 'UsersController@login');

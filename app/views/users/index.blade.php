@@ -62,7 +62,7 @@
                     </tbody>
                 </table>
                 {{ Form::open(array('action' => 'UsersController@postClosePeriodVote', 'method' => 'POST')) }}
-                <a class="command-button default" href="javascript:void(0)" onclick="$(this).closest('form').submit()">
+                <a class="command-button default place-right" href="javascript:void(0)" onclick="$(this).closest('form').submit()">
                     <i class="icon-thumbs-up on-left"></i>
                     Close The Period ({{ $votes }} / {{ $users->count() }})
                     <small>

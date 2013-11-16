@@ -8,21 +8,21 @@
                 {{ Form::open(array('action' => 'UsersController@attempt', 'method' => 'POST')) }}
                     <fieldset>
                         <h2><i class="icon-enter on-left"></i>User Login</h2>
-                        <label for="username">Username:</label>
+                        {{ Form::label('username', 'Username:') }}
                         <div class="input-control text">
-                            <input name="username" id="username" type="text" value="" placeholder="type username"/>
+                            {{ Form::text('username', '', array('placeholder' => 'type username')) }}
                             <button class="btn-clear"></button>
                         </div>
-                        <label for="password">Password:</label>
-                        <div class="input-control text">
-                            <input name="password" id="password" type="password" value="" placeholder="type password"/>
-                            <button class="btn-clear"></button>
+                        {{ Form::label('password', 'Password:') }}
+                        <div class="input-control password">
+                            {{ Form::password('password', array('placeholder' => 'type password')) }}
+                            <button class="btn-reveal"></button>
                         </div>
 
-                        <input type="submit" value="Login">
+                        {{ Form::submit('Login', array('class' => 'default')) }}
                         <div class="input-control checkbox">
                             <label>
-                                <input name="rememberMe" id="rememberMe" type="checkbox" />
+                                {{ Form::checkbox('rememberMe') }}
                                 <span class="check"></span>
                                 Remember me
                             </label>

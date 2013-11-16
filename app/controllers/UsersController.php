@@ -1,13 +1,6 @@
 <?php
 
-class UsersController extends BaseController {
-
-	private $user;
-
-	public function __construct() 
-	{
-		$this->user = Auth::user();
-   	}
+class UsersController extends UserDependController {
 
 	public function index()
 	{
@@ -31,13 +24,6 @@ class UsersController extends BaseController {
                                                'votes' => $votes,
                                                'totalItemPrice' => $totalItemPrice));
 	}
-
-    public function purchasedItems() 
-    {
-        $purchasedItems = $this->user->purchasedItems()->paginate(25);
-        return View::make('users.purchases.list', array('user'   => $this->user,
-                                                        'items'  => $purchasedItems));
-    }
 
     public function postClosePeriodVote() {
         if($this->user->closePeriodVote) {
@@ -64,62 +50,6 @@ class UsersController extends BaseController {
             DB::table('Users')->update(array('closePeriodVote' => false));
             DB::table('PurchasedItems')->update(array('deleted_at' => Carbon::now()->toDateTimeString()));
         });
-    }
-
-    public function getDebts() {
-        $debts = $this->user->debts;
-        $incomes =$this->user->incomes;
-        return View::make('users.debts.list', array('user'   => $this->user,
-                                                    'debts'  => $debts,
-                                                    'incomes'  => $incomes));
-    }
-
-    public function getAddDebt() {
-        $allUsers = User::all();
-        $users = array();
-        foreach($allUsers as $user) {
-            if($user->id != $this->user->id) {
-                $users["$user->id"] = $user->username;
-            }
-        }
-        return View::make('users.debts.create', array('user' => $this->user,
-                                                      'users' => $users));
-    }
-
-    public function postAddDebt() {
-        $debt = new Debt();
-        $debt->payerId = $this->user->id;
-        $debt->payeeId = (int) Input::get('payeeId');
-        $debt->description = Input::get('description');
-        $debt->amount = Input::get('amount');
-        
-        $validator = Validator::make($debt->toArray(), Debt::$rules);
-        if($validator->passes() && $debt->push()) {
-            return Redirect::action('UsersController@getAddDebt')
-                           ->with('message', 'Debt has been added.');
-        }
-        return Redirect::action('UsersController@getAddDebt')
-                       ->with('message', 'Debt not added.')
-                       ->withInput();
-    }
-
-    public function getAddPurchasedItem() {
-        return View::make('users.purchases.create', array('user' => $this->user));
-    }
-
-    public function postAddPurchasedItem() {
-        $purchasedItem = new PurchasedItem();
-        $purchasedItem->userId = $this->user->id;
-        $purchasedItem->description = Input::get('description');
-        $purchasedItem->price = Input::get('price');
-        $validator = Validator::make($purchasedItem->toArray(), PurchasedItem::$rules);
-        if($validator->passes() && $purchasedItem->push()) {
-            return Redirect::action('UsersController@getAddPurchasedItem')
-                           ->with('message', 'Item has been added.');
-        }
-        return Redirect::action('UsersController@getAddPurchasedItem')
-                       ->with('message', 'Item not added.')
-                       ->withInput();
     }
 
 	public function login() 
