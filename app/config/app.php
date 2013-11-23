@@ -26,7 +26,8 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost/debttracker/',
+	//'url' => 'http://localhost/debttracker/',
+	'url' => 'http://dt.penekli.com/',
 
 	/*
 	|--------------------------------------------------------------------------
