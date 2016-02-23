@@ -19,6 +19,13 @@ class PurchasedItemsTableSeeder extends Seeder {
 				'description' 	=> 'Süt yumurta',
 				'price' 		=> 15.75
 			));
+            
+        PurchasedItem::create(
+            array(
+                'userId'		=>	2,
+                'description' 	=> 'mama',
+                'price' 		=> 154.75
+            ));
 	}
 
 }

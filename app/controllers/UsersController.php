@@ -8,15 +8,35 @@ class UsersController extends UserDependController {
         $users = User::all();
         $stats = array();
 
-        $totalItemPrice = PurchasedItem::sum('price');
-        $votes = User::sum('closePeriodVote');
         foreach ($users as $user) {
-            $stats["$user->username"] = array('total' => number_format($user->getTotalItemsPrice(), 2),
-                                              'change' => number_format($user->getTotalItemsPrice() - ($totalItemPrice / $users->count()), 2),);
+            $stats[$user->id] = array("total" => 0, "change" => 0, "name" => $user->username);
+        }
+
+        $allPurchasedItems = PurchasedItem::all();
+        foreach ($allPurchasedItems as $item) {
+            // Add item price to user's total who bought this item
+            $owner = $item->owner;
+            $stats[$owner->id]["total"] += $item->price;
+            
+            $participants = $item->getParticipants();
+            
+            // Item price for each participant
+            $itemPriceEach = $item->price / count($participants);
+            foreach ($participants as $participant) {
+                $stats[$participant->id]["change"] -= $itemPriceEach;
+            }
+        }
+        
+        // Update change stats 
+        foreach ($users as $user) {
+            $stats[$user->id]["change"] += $stats[$user->id]["total"];
+            $stats[$user->id]["total"] = number_format($stats[$user->id]["total"], 2); 
+            $stats[$user->id]["change"] = number_format($stats[$user->id]["change"], 2); 
         }
         arsort($stats);
-
-        $totalItemPrice = number_format($totalItemPrice, 2);
+        
+        $votes = User::sum('closePeriodVote');
+        $totalItemPrice = number_format(PurchasedItem::sum('price'), 2);
 		return View::make('users.index', array('user' => $this->user,
                                                'users' => $users,
                                                'items' => $purchasedItems,

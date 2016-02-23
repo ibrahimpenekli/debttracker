@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder {
 		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 		$this->call('UsersTableSeeder');
 		$this->call('PurchasedItemsTableSeeder');
+        $this->call('ParticipationTableSeeder');
 		$this->call('DebtsTableSeeder');
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 	}

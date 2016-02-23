@@ -55,15 +55,15 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			
-			/*'host'      => 'localhost',
+			'host'      => 'localhost:8889',
 			'database'  => 'debttrackerdb',
 			'username'  => 'root',
-			'password'  => '',*/
+			'password'  => 'root',
 
-			'host'      => 'debttrackerdb.db.11847934.hostedresource.com',
+			/*'host'      => 'localhost',
 			'database'  => 'debttrackerdb',
 			'username'  => 'debttrackerdb',
-			'password'  => 'p2jGe656Dh#',
+			'password'  => 'p2jGe656Dh#',*/
 
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',

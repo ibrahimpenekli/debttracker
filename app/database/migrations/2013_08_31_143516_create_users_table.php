@@ -33,6 +33,24 @@ class CreateUsersTable extends Migration {
 			$table->softDeletes();
 			$table->timestamps();
 		});
+        
+        Schema::create('Participations', function(Blueprint $table) {
+			$table->increments('id');
+            
+			$table->integer('userId')->unsigned();
+			$table->foreign('userId')
+				  ->references('id')->on('Users')
+			      ->onUpdate('cascade')
+			      ->onDelete('cascade');
+                  
+            $table->integer('itemId')->unsigned();
+			$table->foreign('itemId')
+				  ->references('id')->on('PurchasedItems')
+			      ->onUpdate('cascade')
+			      ->onDelete('cascade');
+			$table->softDeletes();
+			$table->timestamps();
+		});
 
 		Schema::create('Debts', function(Blueprint $table) {
 			$table->increments('id');
@@ -64,6 +82,7 @@ class CreateUsersTable extends Migration {
 	public function down()
 	{
 		Schema::dropIfExists('Debts');
+        Schema::dropIfExists('Participations');
 		Schema::dropIfExists('PurchasedItems');
 		Schema::dropIfExists('Users');
 	}

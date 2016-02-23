@@ -12,6 +12,7 @@
                             <th class="text-left">Description</th>
                             <th class="text-left">Price (TRY)</th>
                             <th class="text-left">Date</th>
+                            <th class="text-left">Participants</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,9 @@
                             <td>{{ $item->description }}</td>
                             <td>{{ $item->price }}</td>
                             <td>{{ Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->diffForHumans() }}</td>
+                            <td>@foreach ($item->getParticipants() as $p)
+                                {{ $p->username }} 
+                                @endforeach</td>
                         </tr>   
                     @endforeach
                     </tbody>
@@ -40,7 +44,7 @@
                     <tbody>
                         @foreach ($stats as $username => $val)
                         <tr>
-                            <td>{{ $username }}</td>
+                            <td>{{ $val['name'] }}</td>
                             <td>{{ $val['total'] }}</td>
                             <td>
                                 @if ($val['change'] > 0)
