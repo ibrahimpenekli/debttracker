@@ -1,7 +1,18 @@
 @extends('users.layout')
 
 @section('sub-content')
-	<div class="grid fluid">
+<template is="dom-bind">
+    <iron-ajax url="http://localhost:8888/items" handle-as="json" last-response={{data}} auto></iron-ajax>
+    
+    <iron-list items="[[data]]" as="item">
+        <template>
+        <div>
+            Name: [[item.description]]
+        </div>
+        </template>
+    </iron-list>
+</template>
+	<!--<div class="grid fluid">
         <div class="row">
             <div class="span5 offset2">
                 <h2><i class="icon-cart on-left"></i>Recently Purchased Items</h2>
@@ -81,5 +92,5 @@
                 
             </div>
         </div>
-    </div>
+    </div>-->
 @stop

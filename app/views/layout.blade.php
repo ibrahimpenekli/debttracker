@@ -4,52 +4,38 @@
 		<meta charset="UTF-8">
 	    <meta name="description" content="Debt Tracker">
 	    <meta name="author" content="Halil Ibrahim Penekli">
-
-		
-		<!-- Styles -->	
-		{{ HTML::style('css/metro-bootstrap.css') }}
-		{{ HTML::style('css/metro-bootstrap-responsive.css') }}
-
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
 		<!-- Scripts -->
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-		{{ HTML::script('js/metro/metro-core.js') }}	
-		{{ HTML::script('js/metro/metro-touch-handler.js') }}	
-		{{ HTML::script('js/metro/metro-accordion.js') }}	
-		{{ HTML::script('js/metro/metro-button-set.js') }}	
-		{{ HTML::script('js/metro/metro-date-format.js') }}	
-		{{ HTML::script('js/metro/metro-calendar.js') }}	
-		{{ HTML::script('js/metro/metro-datepicker.js') }}	
-		{{ HTML::script('js/metro/metro-carousel.js') }}	
-		{{ HTML::script('js/metro/metro-countdown.js') }}	
-		{{ HTML::script('js/metro/metro-dropdown.js') }}	
-		{{ HTML::script('js/metro/metro-input-control.js') }}	
-		{{ HTML::script('js/metro/metro-live-tile.js') }}	
-		{{ HTML::script('js/metro/metro-progressbar.js') }}	
-		{{ HTML::script('js/metro/metro-rating.js') }}	
-		{{ HTML::script('js/metro/metro-slider.js') }}	
-		{{ HTML::script('js/metro/metro-tab-control.js') }}	
-		{{ HTML::script('js/metro/metro-table.js') }}	
-		{{ HTML::script('js/metro/metro-times.js') }}	
-		{{ HTML::script('js/metro/metro-dialog.js') }}	
-		{{ HTML::script('js/metro/metro-notify.js') }}	
-		{{ HTML::script('js/metro/metro-listview.js') }}	
-		{{ HTML::script('js/metro/metro-treeview.js') }}	
-		{{ HTML::script('js/metro/metro-fluentmenu.js') }}	
-		{{ HTML::script('js/metro/metro-hint.js') }}			
-		{{ HTML::script('js/custom/custom.js') }}
-		@yield('header-script')
+        <!-- Polymer elements -->
+        <link rel="import" href="/bower_components/polymer/polymer.html">
+        <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
+        <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+        <link rel="import" href="/bower_components/font-roboto/roboto.html">
+        <link rel="import" href="/bower_components/paper-styles/color.html">
+        <link rel="import" href="/bower_components/paper-styles/typography.html">
+        <link rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html">
+       
+       <!-- Styles -->	
+        <style is="custom-style">
+            body { 
+                @apply(--paper-font-body1);
+                background: #eaeaea; 
+                }
+        </style>
+        
+		@yield('header')
 
 		<title>Debt Tracker</title>
 	</head>
-	<body class="metro">
-		<!-- Navigaion Bar -->
-
-		@yield('content')
-
-		<!-- Footer Bar -->
-
+	<body class="fullbleed layout vertical" unresolved>
+        <!-- Content -->
+        @yield('content')
+       
 		<!-- Scripts -->
 		@yield('script')
 	</body>

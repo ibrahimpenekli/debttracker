@@ -1,0 +1,23 @@
+{
+  "name": "menafi",
+  "authors": [
+    "Halil Ibrahim Penekli <h.ibrahimpenekli@gmail.com>"
+  ],
+  "description": "debt tracker",
+  "main": "bilmem",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.3.0",
+    "iron-elements": "PolymerElements/iron-elements#^1.0.8",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7"
+  }
+}

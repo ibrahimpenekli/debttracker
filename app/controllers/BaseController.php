@@ -13,6 +13,10 @@ class BaseController extends Controller {
 	 * @return void
 	 */
 	protected function setupLayout() {
+        // Change Blade syntax for not crash with Polymer
+        Blade::setContentTags('<%', '%>');              // for variables and all things Blade
+        Blade::setEscapedContentTags('<%%', '%%>');     // for escaped data
+        
 		if (!is_null($this->layout)) {
 			$this->layout = View::make($this->layout);
 		}

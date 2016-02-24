@@ -2,6 +2,10 @@
 
 class UsersController extends UserDependController {
 
+    public function items() {
+        return Response::json(PurchasedItem::all());
+    }
+
 	public function index()
 	{
         $purchasedItems = PurchasedItem::orderBy('created_at', 'DESC')->paginate(25);

@@ -21,6 +21,7 @@ Route::group(array('before' => 'auth'), function() {
 	Route::resource('purchased-item', 'PurchasedItemController', array('except' => array('show')));
 
 	Route::get('profile', 'UsersController@index');
+    Route::get('items', 'UsersController@items');
 	Route::post('close-period', 'UsersController@postClosePeriodVote');			
 });
 
