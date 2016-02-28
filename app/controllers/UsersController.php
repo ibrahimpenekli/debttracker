@@ -3,7 +3,29 @@
 class UsersController extends UserDependController {
 
     public function items() {
-        return Response::json(PurchasedItem::all());
+        // Cache all users regarding to their IDs
+        $users = User::all();
+        $userArr = array();
+        foreach ($users as $user) {
+           $userArr[$user->id]["username"] = $user->username;
+           $userArr[$user->id]["avatar"] = asset("/images/avatars/$user->avatar");  
+        }
+        
+        // Assign owner info to purchased items
+        $purchasedItems = PurchasedItem::orderBy('created_at', 'DESC')->get();
+        foreach ($purchasedItems as $item) {
+            $item["when"] = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->diffForHumans();
+            $item["owner"] = $userArr[$item->userId];
+            
+            // Add participant users
+            $participants = array();
+            $participantions = Participation::where('itemId', "=", $item->id)->get();
+            foreach ($participantions as $participation) {
+                array_push($participants, $userArr[$participation->userId]);
+            }
+            $item["participants"] = $participants;
+        }
+        return Response::json($purchasedItems);
     }
 
 	public function index()

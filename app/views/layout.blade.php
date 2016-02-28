@@ -15,9 +15,11 @@
         <link rel="import" href="/bower_components/polymer/polymer.html">
         <link rel="import" href="/bower_components/iron-ajax/iron-ajax.html">
         <link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+        <link rel="import" href="/bower_components/iron-image/iron-image.html">
         <link rel="import" href="/bower_components/font-roboto/roboto.html">
         <link rel="import" href="/bower_components/paper-styles/color.html">
         <link rel="import" href="/bower_components/paper-styles/typography.html">
+        <link rel="import" href="/bower_components/paper-styles/default-theme.html">
         <link rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html">
        
        <!-- Styles -->	

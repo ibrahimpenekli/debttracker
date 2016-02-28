@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration {
 			$table->increments('id');
 			$table->string('username');
 			$table->string('password');
+            $table->string('avatar');
 			$table->boolean('closePeriodVote')->default(false);
 			$table->softDeletes();
 			$table->timestamps();

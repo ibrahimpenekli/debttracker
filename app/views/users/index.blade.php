@@ -1,14 +1,86 @@
 @extends('users.layout')
 
+@section('sub-header')
+<style is="custom-style">
+    iron-list {
+        margin-top: 76px;
+        @apply(--layout-fit);
+        width: 100%;
+    }
+    
+    iron-list {
+        --iron-list-items-container: {
+            width: 100%;
+            margin: auto;
+        };
+    }
+    
+    .purchased-list-item {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+    }
+    .purchased-list-item .avatar {
+        width: 48px;
+        height: 48px;  
+        margin: 8px 16px;
+    }
+    
+    .purchased-list-item .body {
+        @apply(--layout-flex);
+    }
+    .purchased-list-item .body .description {
+        @apply(--paper-font-body1);
+        margin-top: 4px;
+    }
+    .participant {
+        display: inline-block;
+    }
+    .mini-avatar {
+        width: 18px;
+        height: 18px;
+        margin: 2px 2px 0px 2px;
+    }
+    
+    .purchased-list-item .detail {
+        margin: 16px;
+        display: block;
+    }
+    .purchased-list-item .detail .price {
+        @apply(--paper-font-body2);
+    }
+    .purchased-list-item .detail .when {
+        font: var(--paper-font-caption);
+        color: var(--secondary-text-color);
+    }
+    
+    
+</style>
+@stop
+
 @section('sub-content')
 <template is="dom-bind">
     <iron-ajax url="http://localhost:8888/items" handle-as="json" last-response={{data}} auto></iron-ajax>
     
     <iron-list items="[[data]]" as="item">
         <template>
-        <div>
-            Name: [[item.description]]
-        </div>
+            <div class="container purchased-list-item">
+                <iron-image class="avatar" alt="[[item.owner.username]]" sizing="contain" src="[[item.owner.avatar]]"></iron-image>
+                <div class="body">
+                    <div class="description">[[item.description]]</div>
+                    <div class="participants">
+                        <template is="dom-repeat" items="{{item.participants}}">
+                            <div class="participant">
+                                <iron-image id="id_{{index}}" class="mini-avatar" alt="{{item.username}}" sizing="contain" src="{{item.avatar}}"></iron-image> 
+                                <paper-tooltip animation-delay="0" offset="0">{{item.username}}</paper-tooltip>
+                            </div>
+                        </template>              
+                    </div>
+                </div>
+                <div class="detail">
+                    <div class="price">₺[[item.price]]</div>
+                    <div class="when">[[item.when]]</div>
+                </div>
+            </div>
         </template>
     </iron-list>
 </template>
