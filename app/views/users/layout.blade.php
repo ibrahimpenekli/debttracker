@@ -48,8 +48,8 @@
     
      .fab-add {
         position: fixed;
-        bottom: 24px;
-        right: 24px;
+        top: 100px;
+        right: 36px;
     }
     
     .left-toolbar {
@@ -93,7 +93,7 @@
             <paper-header-panel drawer mode="seamed">
                 <paper-toolbar class="left-toolbar medium-tall">
                     <div class="container user-info">
-                        <div><iron-image sizing="contain" id="avatar" alt="<%$user->username%>" src="<%asset('/images/avatars/' . $user->avatar)%>"></iron-image></div>
+                        <div><iron-image sizing="contain" id="avatar" alt="<%$user->username%>" src="<%$user->avatar%>"></iron-image></div>
                         <div class="bottom title"><%$user->username%></div>
                     </div>
                 </paper-toolbar>
@@ -105,11 +105,11 @@
                     </paper-icon-item>
                     <paper-icon-item onclick="onMenuItemSelected('<%URL::action('PurchasedItemController@index')%>')">
                         <iron-icon icon="shopping-basket" item-icon></iron-icon>
-                        Shopping List
+                        My Shopping List
                     </paper-icon-item>
                     <paper-icon-item onclick="onMenuItemSelected('<%URL::action('DebtController@index')%>')">
                         <iron-icon icon="receipt" item-icon></iron-icon>
-                        Debt
+                        My Debt
                     </paper-icon-item>
                     <paper-icon-item onclick="onMenuItemSelected('<%URL::action('UsersController@logout')%>')">
                         <iron-icon icon="exit-to-app" item-icon></iron-icon>

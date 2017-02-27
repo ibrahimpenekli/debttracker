@@ -3,26 +3,20 @@
 @section('sub-header')
 <style is="custom-style">
     iron-list {
-        margin-top: 76px;
-        @apply(--layout-fit);
+        @apply(--layout-flex);
         width: 100%;
-    }
-    
-    iron-list {
-        --iron-list-items-container: {
-            width: 100%;
-            margin: auto;
-        };
+        height: 100%;
     }
     
     .purchased-list-item {
         @apply(--layout-horizontal);
         @apply(--layout-justified);
+        height: 64px;
     }
     .purchased-list-item .avatar {
         width: 48px;
         height: 48px;  
-        margin: 8px 16px;
+        margin: 8px 16px 8px 16px;
     }
     
     .purchased-list-item .body {
@@ -30,7 +24,7 @@
     }
     .purchased-list-item .body .description {
         @apply(--paper-font-body1);
-        margin-top: 4px;
+        margin-top:4px;
     }
     .participant {
         display: inline-block;
@@ -38,13 +32,15 @@
     .mini-avatar {
         width: 18px;
         height: 18px;
-        margin: 2px 2px 0px 2px;
+        margin: 2px;
     }
     
     .purchased-list-item .detail {
         margin: 16px;
         display: block;
     }
+    .purchased-list-item:hover {
+        background: #eaeaea; }
     .purchased-list-item .detail .price {
         @apply(--paper-font-body2);
     }
@@ -59,31 +55,51 @@
 
 @section('sub-content')
 <template is="dom-bind">
-    <iron-ajax url="http://localhost:8888/items" handle-as="json" last-response={{data}} auto></iron-ajax>
+    <iron-ajax url="http://localhost:8888/api/items" handle-as="json" last-response={{items}} auto></iron-ajax>
+    <iron-ajax url="http://localhost:8888/stats" handle-as="json" last-response={{stats}} auto></iron-ajax>
     
-    <iron-list items="[[data]]" as="item">
-        <template>
-            <div class="container purchased-list-item">
-                <iron-image class="avatar" alt="[[item.owner.username]]" sizing="contain" src="[[item.owner.avatar]]"></iron-image>
-                <div class="body">
-                    <div class="description">[[item.description]]</div>
-                    <div class="participants">
-                        <template is="dom-repeat" items="{{item.participants}}">
-                            <div class="participant">
-                                <iron-image id="id_{{index}}" class="mini-avatar" alt="{{item.username}}" sizing="contain" src="{{item.avatar}}"></iron-image> 
-                                <paper-tooltip animation-delay="0" offset="0">{{item.username}}</paper-tooltip>
-                            </div>
-                        </template>              
+    <div class="list-container">
+        <iron-list items="[[items]]" as="item">
+            <template>
+                <div class="container purchased-list-item">
+                    <iron-image class="avatar" alt="[[item.owner.username]]" sizing="contain" src="[[item.owner.avatar]]"></iron-image>
+                    <div class="body">
+                        <div class="description">[[item.description]]</div>
+                        <div class="participants">
+                            <template is="dom-repeat" items="{{item.participants}}" as="participant">
+                                <div class="participant">
+                                    <iron-image id="id_{{index}}" class="mini-avatar" alt="{{participant.username}}" sizing="contain" src="{{participant.avatar}}"></iron-image> 
+                                    <paper-tooltip animation-delay="0" offset="0">{{participant.username}}</paper-tooltip>
+                                </div>
+                            </template>              
+                        </div>
+                    </div>
+                    <div class="detail">
+                        <div class="price">₺[[item.price]]</div>
+                        <div class="when">[[item.when]]</div>
                     </div>
                 </div>
-                <div class="detail">
-                    <div class="price">₺[[item.price]]</div>
-                    <div class="when">[[item.when]]</div>
-                </div>
-            </div>
-        </template>
-    </iron-list>
+            </template>
+        </iron-list>
+    </div>
 </template>
+
+<script>
+    Polymer({
+        is: 'people-list',
+        properties: {
+            items: {
+                type: Array
+            }
+        },
+        ready: function () {
+            document.addEventListener("scroll", function () {
+                // fire iron-resize event to trigger redraw of iron-list
+                document.querySelector('iron-list').fire('iron-resize');
+            });
+        }
+    });
+</script>
 	<!--<div class="grid fluid">
         <div class="row">
             <div class="span5 offset2">

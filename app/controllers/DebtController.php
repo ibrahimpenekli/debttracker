@@ -15,6 +15,14 @@ class DebtController extends UserDependController {
                                               'debts'  => $debts,
                                               'incomes'  => $incomes));
 	}
+    
+    public function debts() {
+        $debts = $this->user->debts->toArray();
+        $incomes = $this->user->incomes->toArray();
+            
+        return Response::json(array("debts"  => $debts,
+                                    "incomes"  => $incomes));
+    }
 
 	/**
 	 * Show the form for creating a new resource.

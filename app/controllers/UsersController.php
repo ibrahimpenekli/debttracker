@@ -1,31 +1,68 @@
 <?php
 
 class UsersController extends UserDependController {
-
+ 
+    public function users() { 
+        return User::all()->toJson();
+    }
+    
     public function items() {
-        // Cache all users regarding to their IDs
-        $users = User::all();
-        $userArr = array();
-        foreach ($users as $user) {
-           $userArr[$user->id]["username"] = $user->username;
-           $userArr[$user->id]["avatar"] = asset("/images/avatars/$user->avatar");  
-        }
-        
-        // Assign owner info to purchased items
-        $purchasedItems = PurchasedItem::orderBy('created_at', 'DESC')->get();
-        foreach ($purchasedItems as $item) {
-            $item["when"] = Carbon::createFromFormat('Y-m-d H:i:s', $item->created_at)->diffForHumans();
-            $item["owner"] = $userArr[$item->userId];
+        $users = User::all()->toArray(); 
+        $items = PurchasedItem::orderBy('created_at', 'DESC')->get()->toArray();
+        foreach ($items as &$item) {
+            $item["owner"] = $users[array_search($item["userId"], array_column($users, "id"))];
+            $item["when"] = Carbon::createFromFormat('Y-m-d H:i:s', $item["created_at"])->diffForHumans();
             
             // Add participant users
-            $participants = array();
-            $participantions = Participation::where('itemId', "=", $item->id)->get();
-            foreach ($participantions as $participation) {
-                array_push($participants, $userArr[$participation->userId]);
+            $participants = Participation::where('itemId', "=", $item["id"])->get();
+            $item["participants"] = array();
+            foreach ($participants as $participant) {
+                $idx = array_search($participant->userId, array_column($users, "id"));
+                array_push($item["participants"], $users[$idx]);
             }
-            $item["participants"] = $participants;
         }
-        return Response::json($purchasedItems);
+        return Response::json($items);
+    }
+    
+    public function stats() {
+        $users = User::all();
+        $stats = array();
+        foreach ($users as $user) {
+            array_push($stats, array("id" => $user->id, 
+                                     "total" => 0, 
+                                     "change" => 0, 
+                                     "username" => $user->username, 
+                                     "avatar" => $user->avatar));
+        }
+        
+        
+        $items = PurchasedItem::all();
+        foreach ($items as $item) {
+            // Add item price to user's total who bought this item
+            $idx = array_search($item->owner->id, array_column($stats, "id"));
+            $stats[$idx]["total"] += $item->price;
+            
+            // Item price for each participant
+            $participants = $item->getParticipants();
+            $itemPriceEach = $item->price / count($participants);
+            foreach ($participants as $participant) {
+                $idx2 = array_search($item->owner->id, array_column($stats, "id"));
+                $stats[$idx2]["change"] -= $itemPriceEach;
+            }
+        }
+        
+        // Update change stats 
+        foreach ($stats as &$stat) {
+            $stat["change"] += $stat["total"]; 
+            $stat["total"] = number_format($stat["total"], 2); 
+            $stat["change"] = number_format($stat["change"], 2); 
+        }
+        
+        arsort($stats);
+        
+        $allStats["total"] = number_format(PurchasedItem::sum('price'), 2);
+        $allStats["userStats"] = array_values($stats);
+        return Response::json($allStats);
     }
 
 	public function index()
